@@ -103,7 +103,7 @@ widget_top = [
     ),
     widget.Spacer(),
     widget.Clock(**decor,
-        format="n<b>%a %d de %B  %H:%M:%S</b>",
+        format="<b>%a %d de %B  %H:%M:%S</b>",
         foreground=colors["foreground"],
         mouse_callbacks={'Button1': lambda : subprocess.Popen(['./galendae/galendae'])},
         fontsize=16,
