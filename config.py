@@ -57,7 +57,7 @@ mod = "mod4"
 terminal = guess_terminal()
 base_dir = "/home/juanda/.config/qtile"
 
-pallette = ["#E94F3799", "#F6F1EB", "#393E4190", "#3F88C5", "#44BBA460", "#242424E6"]
+pallette = ["#E94F3799", "#F6F1EB", "#393E41", "#3F88C5", "#44BBA460", "#242424E6"]
 
 colors = {
     "background": pallette[2],
@@ -267,8 +267,9 @@ keys = [
     Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer -q sset Master 5%+")),
     Key([], "XF86AudioLowerVolume", lazy.spawn("amixer -q sset Master 5%-")),
     Key([], "XF86AudioMute", lazy.spawn("amixer -q sset Master toggle")),
-    # Key([], "XF86AudioPause", lazy.spawn("amixer -q sset Master toggle")),
-    # Key([], "XF86AudioNext", lazy.spawn("amixer -q sset Master toggle")),
+    Key([], "XF86AudioPause", lazy.spawn("playerctl stop")),
+    Key([], "XF86AudioPlay", lazy.spawn("playerctl play")),
+    Key([], "XF86AudioNext", lazy.spawn("playerctl next")),
     # Configuración de brillo
     Key([], "XF86MonBrightnessDown", lazy.spawn(f"{base_dir}/brigthness.sh -d")),
     Key([], "XF86MonBrightnessUp", lazy.spawn(f"{base_dir}/brigthness.sh -u")),
@@ -276,6 +277,9 @@ keys = [
 
     # Bluetooth
     Key([mod], "s", lazy.spawn(f"{base_dir}/bluetooth.sh")),
+    #pass
+    Key([mod], "p", lazy.spawn("passmenu -l 5")),
+
 
     Key([mod], "r", lazy.spawn("rofi -show drun -modi drun -show-icons")),
     Key(

@@ -1,0 +1,7 @@
+//@theme "/home/juanda/.config/rofi/themes/launchpad.rasi"
+//@theme "/usr/share/rofi/themes/android_notification.rasi"
+//@theme "/home/juanda/.config/rofi/themes/windows11-list-light.rasi"
+//@theme "/home/juanda/.config/rofi/themes/windows11-grid-light.rasi"
+//@theme "/home/juanda/.config/rofi/themes/squared-material-red.rasi"
+//@theme "/home/juanda/.config/rofi/themes/spotlight-dark.rasi"
+@theme "/home/juanda/.config/qtile/config.rasi"

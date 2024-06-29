@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # Demonio de emacs
-emacs --daemon &
+# emacs --daemon & lo dejé en el bashrc
 
 # Gestor de transparencias
 picom &
@@ -13,8 +13,7 @@ flatpak run com.dropbox.Client &
 nm-applet &
 
 #  Configuración del teclado
-setxkbmap -layout us -option ctrl:swapcaps
-setxkbmap latam
+setxkbmap -layout latam -option ctrl:swapcaps
 
 # Configuración del touch pad
 
