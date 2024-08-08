@@ -57,12 +57,22 @@ mod = "mod4"
 terminal = guess_terminal()
 base_dir = "/home/juanda/.config/qtile"
 
-pallette = ["#E94F3799", "#F6F1EB", "#393E41", "#3F88C5", "#44BBA460", "#242424E6"]
+# pallette = ["#E94F3799", "#F6F1EB", "#393E41", "#3F88C5", "#44BBA460", "#242424E6"]
+
+pallette = ["#F6F1EB", "#393E41", "#3F88C5","#242424E6"]
+
+pallette1 = [
+    "#ff1493",
+    "#dda0ad",
+    "#ff1493",
+    "#ffffff"
+]
 
 colors = {
-    "background": pallette[2],
-    "foreground": pallette[1],
-    "highlight": pallette[3],
+    "background": pallette[1],
+    "foreground": pallette[0],
+    "highlight": pallette[2],
+    "decoration": pallette[3]
 }
 
 @hook.subscribe.startup_once
@@ -72,7 +82,7 @@ def autostart():
 
 decor = {
    "decorations": [
-       RectDecoration(colour=pallette[5],
+       RectDecoration(colour=colors["decoration"],
        radius=10,
        filled=True,
        padding_y=1,
@@ -257,6 +267,7 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "x", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    Key([], "F8", lazy.spawn("flameshot gui")),
     Key([], "Print", lazy.spawn("flameshot gui")),
     Key([mod], "e", lazy.spawn("nautilus -w")),
     # Intercambiando Control con Caps tecla
@@ -319,7 +330,7 @@ layout_theme = {
     "border_width": 3,
     "margin": 3,
     "border_focus": colors["highlight"],
-    "border_normal": pallette[5],  # colors["foreground"],
+    "border_normal": colors["decoration"],  # colors["foreground"],
     # "border_focus_stack":pallette[4]
 }
 
