@@ -54,7 +54,7 @@ def space(len):
 
 
 mod = "mod4"
-terminal = guess_terminal()
+terminal = guess_terminal("kitty")
 base_dir = "/home/juanda/.config/qtile"
 
 # pallette = ["#E94F3799", "#F6F1EB", "#393E41", "#3F88C5", "#44BBA460", "#242424E6"]
@@ -289,7 +289,7 @@ keys = [
     # Bluetooth
     Key([mod], "s", lazy.spawn(f"{base_dir}/bluetooth.sh")),
     #pass
-    Key([mod], "p", lazy.spawn("passmenu -l 5")),
+    Key([mod], "p", lazy.spawn("passmenu")),
 
 
     Key([mod], "r", lazy.spawn("rofi -show drun -modi drun -show-icons")),
@@ -327,8 +327,8 @@ for i in groups:
     )
 
 layout_theme = {
-    "border_width": 3,
-    "margin": 3,
+    "border_width": 0,
+    "margin": 0,
     "border_focus": colors["highlight"],
     "border_normal": colors["decoration"],  # colors["foreground"],
     # "border_focus_stack":pallette[4]
@@ -336,7 +336,7 @@ layout_theme = {
 
 layouts = [
     layout.Columns(**layout_theme),
-    layout.Max(**{"margin": 4}),
+    layout.Max(**{"margin":0}),
     # layout.Floating(**layout_theme)
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
