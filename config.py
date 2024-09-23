@@ -57,7 +57,7 @@ mod = "mod4"
 terminal = guess_terminal("kitty")
 base_dir = "/home/juanda/.config/qtile"
 
-# pallette = ["#E94F3799", "#F6F1EB", "#393E41", "#3F88C5", "#44BBA460", "#242424E6"]
+pallette2 = ["#F6F1EB", "#393E41", "#e94f3799", "#3F88C5", "#44BBA460", "#242424E6"]
 
 pallette = ["#F6F1EB", "#393E41", "#3F88C5","#242424E6"]
 
@@ -116,13 +116,13 @@ widget_top = [
         format="<b>%a %d de %B  %H:%M:%S</b>",
         foreground=colors["foreground"],
         mouse_callbacks={'Button1': lambda : subprocess.Popen(['./galendae/galendae'])},
-        fontsize=16,
+        # fontsize=16,
         padding=10,
     ),
     widget.Spacer(),
     widget.Pomodoro(**decor,
         color_active=colors["foreground"],
-        fontsize=16,
+        # fontsize=16,
         color_inactive=colors["foreground"],
         # background='#ffffff50',
         padding=16,
@@ -327,7 +327,7 @@ for i in groups:
     )
 
 layout_theme = {
-    "border_width": 0,
+    "border_width": 3,
     "margin": 0,
     "border_focus": colors["highlight"],
     "border_normal": colors["decoration"],  # colors["foreground"],
@@ -348,6 +348,7 @@ layouts = [
     # layout.Tile(),
     # layout.TreeTab(),
     # layout.VerticalTile(),
+    # layout.Spiral()
     # layout.Zoomy(),
 ]
 
