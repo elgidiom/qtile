@@ -33,6 +33,9 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 import os, subprocess
 
+from libqtile.log_utils import logger
+
+
 from libqtile import hook
 
 """Widget personalizados."""
@@ -406,21 +409,32 @@ floating_layout = layout.Floating(
         Match(wm_class="ssh-askpass"),  # ssh-askpass
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
-        Match(wm_class="galendae"),  # calendario popup
-
+        # Match(wm_class="galendae"),  # calendario
+        Match(title="Meet - "),  # calendario popup
+        # Match(wm_window_role="pop-up"),
     ],
     no_reposition_rules=[
-        Match(wm_class="galendae"),
+        # Match(wm_class="galendae"), # Calendario pop-up
+        Match(title="Meet - "),
     ],
 )
 
 
 @hook.subscribe.client_new
-def new_clinet(client):
-    if "galendae" in client.get_wm_class():
-        client.set_position_floating(817,32)
+def new_client(client):
+    logger.warning(client.name)
+    wm_class = client.get_wm_class()
+    client_name = client.name
+    if wm_class and "galendae" in wm_class:
+        client.set_position_floating(817, 32)
 
+    if client_name and "Meet -" in client_name:
+        client.floating = True
+        client.place(1462, 808, 446, 232, 0, None)
 
+    if wm_class and "gnome-calculator" in wm_class:
+        client.floating = True
+        client.place(758, 260, 392, 514)
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True
