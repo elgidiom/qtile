@@ -131,18 +131,18 @@ widget_top = [
         padding=16,
         length_pomodori=25,
     ),
-    widget.Notify(
-        # default_timeout_urgent=15,
-        padding=20,
-        audiofile=base_dir + "/songs/notify.wav",
-        scroll=True,
-        width=320,
-        parse_text=lambda x: x.replace("\n", ""),
-        scroll_step=1,
-        scroll_interval=0.006,
-        scroll_fixed_width=True,
-        scroll_delay=1,
-    ),
+    # widget.Notify(
+    #     # default_timeout_urgent=15,
+    #     padding=20,
+    #     # audiofile=base_dir + "/songs/notify.wav",
+    #     scroll=True,
+    #     width=320,
+    #     parse_text=lambda x: x.replace("\n", ""),
+    #     scroll_step=1,
+    #     scroll_interval=0.006,
+    #     scroll_fixed_width=True,
+    #     scroll_delay=1,
+    # ),
     # widget.Wlan(
     #     interface="wlp2s0",
     #     padding=15,
@@ -301,6 +301,7 @@ keys = [
     ),
     Key([mod], "f", lazy.window.toggle_floating(), desc="toggle floating"),
     Key([mod, "control"], "e", lazy.spawn("emacsclient -c -a 'emacs'")),
+    Key([mod], "0", lazy.spawn(f"i3lock -i {base_dir}/wallpapers/lockscreen.jpg -F")),
 ]
 
 groups = [Group(i) for i in "12345"]
@@ -419,7 +420,6 @@ floating_layout = layout.Floating(
     ],
 )
 
-
 @hook.subscribe.client_new
 def new_client(client):
     logger.warning(client.name)
@@ -435,6 +435,9 @@ def new_client(client):
     if wm_class and "gnome-calculator" in wm_class:
         client.floating = True
         client.place(758, 260, 392, 514)
+    if wm_class and "simplescreenrecorder" in wm_class:
+        client.floating = True
+        client.place(487,672, 687,220)
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True

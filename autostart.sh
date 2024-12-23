@@ -12,8 +12,11 @@ flatpak run com.dropbox.Client &
 # Run wifi
 nm-applet &
 
-#  Configuración del teclado
+# Configuración del teclado
 setxkbmap -layout latam -option ctrl:swapcaps
+
+# Demonio de notificaciones
+dunst &
 
 # Configuración del touch pad
 
