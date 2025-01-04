@@ -62,7 +62,7 @@ base_dir = "/home/juanda/.config/qtile"
 
 pallette2 = ["#F6F1EB", "#393E41", "#e94f3799", "#3F88C5", "#44BBA460", "#242424E6"]
 
-pallette = ["#F6F1EB", "#393E41", "#3F88C5","#242424E6"]
+pallette = ["#F6F1EB", "#393E4100", "#3F88C5","#242424E600","#ffffff00"]
 
 pallette1 = [
     "#ff1493",
@@ -75,7 +75,7 @@ colors = {
     "background": pallette[1],
     "foreground": pallette[0],
     "highlight": pallette[2],
-    "decoration": pallette[3]
+    "decoration": pallette[4]
 }
 
 @hook.subscribe.startup_once
@@ -124,13 +124,13 @@ widget_top = [
         check_mute_string='nada',
     ),
     widget.Spacer(
-        length=15,
+        length=200,
     ),
     # widget.Spacer(),
-    widget.GroupBox(**decor,
+    widget.GroupBox(
         active=colors["highlight"],
         highlight_method="block",
-        this_current_screen_border="00000060",  # colors["highlight"],
+        this_current_screen_border="ffffff20",  # colors["highlight"],
         borderwidth=1,
         margin_x=5,
         padding_x=10,
@@ -153,6 +153,9 @@ widget_top = [
         padding=16,
         length_pomodori=25,
     ),
+    widget.Spacer(
+        length=100,
+    ),
     # widget.Notify(
     #     # default_timeout_urgent=15,
     #     padding=20,
@@ -173,7 +176,7 @@ widget_top = [
     # widget.Bluetooth(),
     widget.Systray(**decor
     ),
-    space(10),
+    # space(10),
 
     widget.Memory(**decor,
         measure_mem="G",
@@ -373,10 +376,10 @@ for i in groups:
     )
 
 layout_theme = {
-    "border_width": 3,
+    "border_width": 2,
     "margin": 0,
     "border_focus": colors["highlight"],
-    "border_normal": colors["decoration"],  # colors["foreground"],
+    # "border_normal": colors["decoration"],  # colors["foreground"],
     # "border_focus_stack":pallette[4]
 }
 
