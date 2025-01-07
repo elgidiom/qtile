@@ -104,12 +104,13 @@ widget_top = [
     widget.QuickExit(**decor,
     default_text = '',
     countdown_format='{}',
-    foreground = 'ff4500',
+    foreground = '525252',
     # fmt = '<b>{}</b>',
     countdown_start = 5,
     ),
     widget.TextBox(**decor,
         fmt='   ',
+        foreground = '525252',
         mouse_callbacks = {'Button1': lazy.spawn(f"i3lock -i {base_dir}/wallpapers/lockscreen.jpg -F")}
     ),
     widget.Spacer(length=10),
@@ -131,8 +132,8 @@ widget_top = [
         active=colors["highlight"],
         highlight_method="block",
         this_current_screen_border="ffffff20",  # colors["highlight"],
-        borderwidth=1,
-        margin_x=5,
+        borderwidth=0,
+        margin_x=0,
         padding_x=10,
         # background=colors["highlight"],
     ),
@@ -174,14 +175,13 @@ widget_top = [
     #     # format='{essid} {percent:2.0%}'
     # ),
     # widget.Bluetooth(),
-    widget.Systray(**decor
-    ),
-    # space(10),
-
     widget.Memory(**decor,
         measure_mem="G",
         format="{MemUsed: .2f}{mm}/{MemTotal: .2f}{mm}",
     ),
+    widget.Systray(**decor
+    ),
+    # space(10),
     widget.Spacer(**decor,
         length=5,
     ),
@@ -376,10 +376,10 @@ for i in groups:
     )
 
 layout_theme = {
-    "border_width": 2,
+    "border_width": 3,
     "margin": 0,
     "border_focus": colors["highlight"],
-    # "border_normal": colors["decoration"],  # colors["foreground"],
+    "border_normal": "#00000000",  # colors["foreground"],
     # "border_focus_stack":pallette[4]
 }
 
