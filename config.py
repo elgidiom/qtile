@@ -24,10 +24,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from qtile_extras import widget
-from qtile_extras.widget.decorations import RectDecoration
+# from qtile_extras import widget
+# from qtile_extras.widget.decorations import RectDecoration
 
-from libqtile import bar, layout# widget
+from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
@@ -83,43 +83,43 @@ def autostart():
     home = os.path.expanduser("~/.config/qtile/autostart.sh")
     subprocess.Popen([home])
 
-decor = {
-   "decorations": [
-       RectDecoration(colour=colors["decoration"],
-       radius=10,
-       filled=True,
-       padding_y=1,
-       group=True,
-       )
-    ]
-}
+# decor = {
+#    "decorations": [
+#        RectDecoration(colour=colors["decoration"],
+#        radius=10,
+#        filled=True,
+#        padding_y=1,
+#        group=True,
+#        )
+#     ]
+# }
 
 widget_top = [
     widget.Spacer(
         length=10,
     ),
-    widget.Spacer(**decor,
+    widget.Spacer(
         length=5,
     ),
-    widget.QuickExit(**decor,
+    widget.QuickExit(
     default_text = '',
     countdown_format='{}',
     foreground = '525252',
     # fmt = '<b>{}</b>',
     countdown_start = 5,
     ),
-    widget.TextBox(**decor,
+    widget.TextBox(
         fmt='   ',
         foreground = '525252',
         mouse_callbacks = {'Button1': lazy.spawn(f"i3lock -i {base_dir}/wallpapers/lockscreen.jpg -F")}
     ),
     widget.Spacer(length=10),
-    widget.PulseVolume(**decor,
+    widget.PulseVolume(
         emoji=True,
         fmt='{}',
         emoji_list=['󰝟','','',''],
     ),
-    widget.PulseVolume(**decor,
+    widget.PulseVolume(
         emoji=False,
         fmt='{}',
         check_mute_string='nada',
@@ -138,7 +138,7 @@ widget_top = [
         # background=colors["highlight"],
     ),
     widget.Spacer(),
-    widget.Clock(**decor,
+    widget.Clock(
         format="<b>%a %d de %B  %H:%M:%S</b>",
         foreground=colors["foreground"],
         mouse_callbacks={'Button1': lambda : subprocess.Popen(['./galendae/galendae'])},
@@ -146,7 +146,7 @@ widget_top = [
         padding=10,
     ),
     widget.Spacer(),
-    widget.Pomodoro(**decor,
+    widget.Pomodoro(
         color_active=colors["foreground"],
         # fontsize=16,
         color_inactive=colors["foreground"],
@@ -154,6 +154,7 @@ widget_top = [
         padding=16,
         length_pomodori=25,
     ),
+    # widget.Redshift(),
     widget.Spacer(
         length=100,
     ),
@@ -175,18 +176,17 @@ widget_top = [
     #     # format='{essid} {percent:2.0%}'
     # ),
     # widget.Bluetooth(),
-    widget.Memory(**decor,
+    widget.Memory(
         measure_mem="G",
         format="{MemUsed: .2f}{mm}/{MemTotal: .2f}{mm}",
     ),
-    widget.Systray(**decor
-    ),
+    widget.Systray(),
     # space(10),
-    widget.Spacer(**decor,
+    widget.Spacer(
         length=5,
     ),
-    #widget.Spacer(**decor, length=10),
-    widget.Battery(**decor,
+    #widget.Spacer( length=10),
+    widget.Battery(
         foreground=colors["foreground"],
         format="{char} {percent:2.0%}",
         update_interval=10,
@@ -201,7 +201,7 @@ widget_top = [
 
 widget_bottom = [
     # space(5),
-    # widget.GroupBox(**decor,
+    # widget.GroupBox(
     #     active=colors["highlight"],
     #     highlight_method="block",
     #     this_current_screen_border="00000060",  # colors["highlight"],
@@ -240,15 +240,15 @@ widget_bottom = [
     #     # background=colors["highlight"],
     #     graph_color=colors["highlight"],
     # ),
-    widget.Memory(**decor,
+    widget.Memory(
         measure_mem="G",
         format="{MemUsed: .2f}{mm}/{MemTotal: .2f}{mm}",
     ),
-    widget.Spacer(**decor,
+    widget.Spacer(
         length=5,
     ),
-    #widget.Spacer(**decor, length=10),
-    widget.Battery(**decor,
+    #widget.Spacer( length=10),
+    widget.Battery(
         foreground=colors["foreground"],
         format="{char} {percent:2.0%}",
         update_interval=10,
@@ -259,7 +259,7 @@ widget_bottom = [
         full_char="",
         low_percentage=0.2,
     ),
-   # widget.Spacer(**decor,
+   # widget.Spacer(
    #     length=5,
    # ),
     widget.Spacer(
@@ -342,11 +342,13 @@ keys = [
 
     Key([mod], "r", lazy.spawn("rofi -show drun -modi drun -show-icons")),
     Key(
-        [mod], "d", minimize_all(), desc="Toggle hide/show all windows on current group"
+        [mod], "0", minimize_all(), desc="Toggle hide/show all windows on current group"
     ),
     Key([mod], "f", lazy.window.toggle_floating(), desc="toggle floating"),
     Key([mod, "control"], "e", lazy.spawn("emacsclient -c -a 'emacs'")),
-    Key([mod], "0", lazy.spawn(f"i3lock -i {base_dir}/wallpapers/lockscreen.jpg -F")),
+    Key([mod,"shift"], "0", lazy.spawn(f"i3lock -i {base_dir}/wallpapers/lockscreen.jpg -F")),
+    Key([mod], "d", lazy.spawn("rofi -show window -show-icons")),
+
 ]
 
 groups = [Group(i) for i in "12345"]
