@@ -12,8 +12,8 @@ xidlehook \
     --timer 300 \
     'xrandr --output "$PRIMARY_DISPLAY" --brightness .1' \
     'xrandr --output "$PRIMARY_DISPLAY" --brightness 1' \
-    `# Undim & lock after 60 more seconds` \
-    --timer 60 \
+    `# Undim & lock after X more seconds` \
+    --timer 300 \
     'xrandr --output "$PRIMARY_DISPLAY" --brightness 1; i3lock -i ~/.config/qtile/wallpapers/lockscreen.jpg -F' \
     '' \
     `# Finally, suspend an hour after it locks` \

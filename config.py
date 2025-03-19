@@ -129,7 +129,7 @@ widget_top = [
     ),
     # widget.Spacer(),
     widget.GroupBox(
-        active=colors["highlight"],
+        active=colors["foreground"],
         highlight_method="block",
         this_current_screen_border="ffffff20",  # colors["highlight"],
         borderwidth=0,
@@ -412,7 +412,7 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper=base_dir + "/wallpapers/wallpaper_house.jpg",
+        wallpaper=base_dir + "/wallpapers/wallpaper_beach.jpg",
         wallpaper_mode="stretch",
         # bottom=bar.Bar(
         #     widgets=widget_bottom,
