@@ -379,7 +379,7 @@ for i in groups:
 
 layout_theme = {
     "border_width": 3,
-    "margin": 0,
+    "margin": 5,
     "border_focus": colors["highlight"],
     "border_normal": "#00000000",  # colors["foreground"],
     # "border_focus_stack":pallette[4]
