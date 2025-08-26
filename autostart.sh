@@ -22,12 +22,18 @@ setxkbmap -layout latam -option ctrl:swapcaps
 
 # Configuración del touch pad
 
-## Activar el clic táctil
-xinput set-prop "ELAN06FA:00 04F3:32BA Touchpad" "libinput Tapping Enabled" 1
+# Detectar automáticamente el nombre del touchpad (más seguro que usar id)
+DEVICE=$(xinput list | grep -i 'touchpad' | awk -F'\t' '{print $2}' | sed 's/^↳ //')
 
-## Configurar el desplazamiento vertical
-xinput set-prop "ELAN06FA:00 04F3:32BA Touchpad" "libinput Natural Scrolling Enabled" 1
-xinput set-prop "ELAN06FA:00 04F3:32BA Mouse" "libinput Natural Scrolling Enabled Default" 1
+if [ -n "$DEVICE" ]; then
+    # Activar tap-to-click
+    xinput set-prop "$DEVICE" "libinput Tapping Enabled" 1
+    # Activar scroll natural
+    xinput set-prop "$DEVICE" "libinput Natural Scrolling Enabled" 1
+else
+    echo "No se detectó touchpad."
+fi
+
 
 # Para bloquear la pantalla
 ~/.config/qtile/xidlehook.sh &

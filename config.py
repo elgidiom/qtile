@@ -58,7 +58,7 @@ def space(len):
 
 mod = "mod4"
 terminal = guess_terminal("kitty")
-base_dir = "/home/juanda/.config/qtile"
+base_dir = "/home/gidiom/.config/qtile"
 
 pallette2 = ["#F6F1EB", "#393E41", "#e94f3799", "#3F88C5", "#44BBA460", "#242424E6"]
 
@@ -141,7 +141,7 @@ widget_top = [
     widget.Clock(
         format="<b>%a %d de %B  %H:%M:%S</b>",
         foreground=colors["foreground"],
-        mouse_callbacks={'Button1': lambda : subprocess.Popen(['./galendae/galendae'])},
+        # mouse_callbacks={'Button1': lambda : subprocess.Popen(['./galendae/galendae'])},
         # fontsize=16,
         padding=10,
     ),
@@ -340,14 +340,14 @@ keys = [
     Key([mod], "p", lazy.spawn("passmenu")),
 
 
-    Key([mod], "r", lazy.spawn("rofi -show drun -modi drun -show-icons")),
+    Key([mod], "r", lazy.spawn("rofi -show drun -modi drun -show-icons -config '~/.config/qtile/config_gen.rasi'")),
     Key(
         [mod], "0", minimize_all(), desc="Toggle hide/show all windows on current group"
     ),
     Key([mod], "f", lazy.window.toggle_floating(), desc="toggle floating"),
     Key([mod, "control"], "e", lazy.spawn("emacsclient -c -a 'emacs'")),
     Key([mod,"shift"], "0", lazy.spawn(f"i3lock -i {base_dir}/wallpapers/lockscreen.jpg -F")),
-    Key([mod], "d", lazy.spawn("rofi -show window -show-icons")),
+    Key([mod], "d", lazy.spawn("rofi -show window -show-icons -config '~/.config/qtile/config_gen.rasi'")),
 
 ]
 
