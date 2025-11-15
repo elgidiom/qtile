@@ -8,3 +8,6 @@ tmp/
 build
 htmlcov
 *~
+
+# Local theme overrides (keep .env versioned, ignore local)
+.env.local

@@ -37,6 +37,7 @@ from libqtile.log_utils import logger
 
 
 from libqtile import hook
+from themes.palettes import get_theme, THEMES
 
 """Widget personalizados."""
 from widgets.my_widget import ShutdownWidget
@@ -60,23 +61,45 @@ mod = "mod4"
 terminal = guess_terminal("kitty")
 base_dir = "/home/gidiom/.config/qtile"
 
-pallette2 = ["#F6F1EB", "#393E41", "#e94f3799", "#3F88C5", "#44BBA460", "#242424E6"]
+# --- Theme selection via .env/.env.local or environment ---
+def _read_env_file(path: str):
+    data = {}
+    try:
+        with open(path, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                if '=' in line:
+                    k, v = line.split('=', 1)
+                    data[k.strip()] = v.strip()
+    except FileNotFoundError:
+        pass
+    return data
 
-pallette = ["#F6F1EB", "#393E4100", "#3F88C5","#242424E600","#ffffff00"]
+env_local = _read_env_file(os.path.join(base_dir, '.env.local'))
+env_repo = _read_env_file(os.path.join(base_dir, '.env'))
+theme_name = env_local.get('QTILE_THEME') or env_repo.get('QTILE_THEME') or os.environ.get('QTILE_THEME', 'ocean')
+theme = get_theme(theme_name)
 
-pallette1 = [
-    "#ff1493",
-    "#dda0ad",
-    "#ff1493",
-    "#ffffff"
-]
-
+# Colors mapping used across the config
 colors = {
-    "background": pallette[1],
-    "foreground": pallette[0],
-    "highlight": pallette[2],
-    "decoration": pallette[4]
+    "background": theme.get("bar_bg", theme["bg"]),
+    "foreground": theme["fg"],
+    "highlight": theme["accent"],
+    "decoration": theme.get("bg_alt", theme["bg"]),
 }
+
+# Theme string for rofi to override template colors at runtime
+ROFI_THEME_STR = (
+    f"* {{ fg0: {theme['fg']}; fg2: {theme.get('fg_muted', theme['fg'])}; "
+    f"bg0: {theme['bg']}; bg2: {theme['accent']}; }}"
+)
+
+# Export for scripts (e.g., bluetooth.sh) launched from Qtile
+os.environ["ROFI_THEME_STR"] = ROFI_THEME_STR
+
+# paletas anteriores eliminadas en favor de themes/palettes.py
 
 @hook.subscribe.startup_once
 def autostart():
@@ -341,14 +364,22 @@ keys = [
     Key([mod], "p", lazy.spawn("passmenu")),
 
 
-    Key([mod], "r", lazy.spawn("rofi -show drun -modi drun -show-icons -config /home/gidiom/.config/qtile/rofi/drun.rasi")),
+    Key([mod], "r", lazy.spawn(
+        "rofi -show drun -modi drun -show-icons "
+        "-config /home/gidiom/.config/qtile/rofi/drun.rasi "
+        f"-theme-str '{ROFI_THEME_STR}'"
+    )),
     Key(
         [mod], "0", minimize_all(), desc="Toggle hide/show all windows on current group"
     ),
     Key([mod], "f", lazy.window.toggle_floating(), desc="toggle floating"),
     Key([mod, "control"], "e", lazy.spawn("emacsclient -c -a 'emacs'")),
     Key([mod,"shift"], "0", lazy.spawn(f"i3lock -i {base_dir}/wallpapers/lockscreen.jpg -F")),
-    Key([mod], "d", lazy.spawn("rofi -show window -show-icons -config /home/gidiom/.config/qtile/rofi/window.rasi")),
+    Key([mod], "d", lazy.spawn(
+        "rofi -show window -show-icons "
+        "-config /home/gidiom/.config/qtile/rofi/window.rasi "
+        f"-theme-str '{ROFI_THEME_STR}'"
+    )),
 
 ]
 
