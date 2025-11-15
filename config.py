@@ -57,6 +57,9 @@ def space(len):
     return widget.Spacer(length=len)
 
 
+ 
+
+
 mod = "mod4"
 terminal = guess_terminal("kitty")
 base_dir = "/home/gidiom/.config/qtile"
@@ -545,3 +548,40 @@ wl_input_rules = None
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
 wmname = "LG3"
+@lazy.function
+def switch_theme(qtile):
+    names = sorted(THEMES.keys())
+    menu = "\n".join(names)
+    cmd = [
+        "rofi", "-dmenu", "-i", "-p", "Tema",
+        "-config", f"{base_dir}/rofi/menu.rasi",
+        "-theme-str", ROFI_THEME_STR,
+    ]
+    try:
+        proc = subprocess.run(cmd, input=menu, text=True, capture_output=True)
+        choice = proc.stdout.strip()
+    except Exception:
+        return
+    if not choice or choice not in THEMES:
+        return
+    env_local_path = os.path.join(base_dir, ".env.local")
+    lines = []
+    try:
+        with open(env_local_path, "r") as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        lines = []
+    written = False
+    for i, line in enumerate(lines):
+        if line.strip().startswith("QTILE_THEME="):
+            lines[i] = f"QTILE_THEME={choice}\n"
+            written = True
+            break
+    if not written:
+        lines.append(f"QTILE_THEME={choice}\n")
+    with open(env_local_path, "w") as f:
+        f.writelines(lines)
+    qtile.reload_config()
+
+# Bind after function is defined to avoid NameError on reload
+keys.append(Key([mod], "t", switch_theme))
