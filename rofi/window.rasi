@@ -1,0 +1,5 @@
+@theme "/home/gidiom/.config/qtile/rofi/shared.rasi"
+
+/* Window switcher (Mod+d) specific tweaks */
+window { width: 520; height: 40%; }
+entry  { placeholder: "Buscar ventana"; }

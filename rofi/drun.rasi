@@ -1,0 +1,5 @@
+@theme "/home/gidiom/.config/qtile/rofi/shared.rasi"
+
+/* App launcher (Mod+r) specific tweaks */
+window { width: 640; height: 35%; }
+entry  { placeholder: "Buscar aplicaciones"; }

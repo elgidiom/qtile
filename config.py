@@ -341,14 +341,14 @@ keys = [
     Key([mod], "p", lazy.spawn("passmenu")),
 
 
-    Key([mod], "r", lazy.spawn("rofi -show drun -modi drun -show-icons -config '~/.config/qtile/config_gen.rasi'")),
+    Key([mod], "r", lazy.spawn("rofi -show drun -modi drun -show-icons -config /home/gidiom/.config/qtile/rofi/drun.rasi")),
     Key(
         [mod], "0", minimize_all(), desc="Toggle hide/show all windows on current group"
     ),
     Key([mod], "f", lazy.window.toggle_floating(), desc="toggle floating"),
     Key([mod, "control"], "e", lazy.spawn("emacsclient -c -a 'emacs'")),
     Key([mod,"shift"], "0", lazy.spawn(f"i3lock -i {base_dir}/wallpapers/lockscreen.jpg -F")),
-    Key([mod], "d", lazy.spawn("rofi -show window -show-icons -config '~/.config/qtile/config_gen.rasi'")),
+    Key([mod], "d", lazy.spawn("rofi -show window -show-icons -config /home/gidiom/.config/qtile/rofi/window.rasi")),
 
 ]
 

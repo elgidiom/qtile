@@ -1,0 +1,6 @@
+@theme "/home/gidiom/.config/qtile/rofi/shared.rasi"
+
+/* dmenu-like prompts (used by scripts) */
+window { width: 520; height: 30%; }
+entry  { placeholder: "Buscar..."; }
+

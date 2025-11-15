@@ -1,0 +1,59 @@
+/*******************************************************************************
+ * Rofi minimal theme (Qtile palette)
+ * Shared base imported by mode-specific themes.
+ ******************************************************************************/
+
+* {
+  font:               "Montserrat 12";
+  fg0:                #F6F1EB;        /* qtile pallette[0] */
+  fg1:                #FFFFFF;
+  fg2:                #F6F1EBA6;      /* muted foreground */
+  bg0:                #242424E6;      /* translucent dark background */
+  bg1:                #7E7E7E80;
+  bg2:                #3F88C5CC;      /* highlight with slight alpha */
+
+  background-color:   transparent;
+  text-color:         @fg0;
+  margin:             0;
+  padding:            0;
+  spacing:            0;
+}
+
+window {
+  background-color:   @bg0;
+  location:           center;
+  border-radius:      8;
+  padding:            10;
+  border-color:       transparent;
+}
+
+inputbar {
+  font:               "Montserrat 13";
+  padding:            10 6;
+  spacing:            8px;
+  children:           [ entry ];
+}
+
+entry {
+  font:               inherit;
+  color:              @fg0;
+  placeholder-color:  @fg2;
+}
+
+message { background-color: transparent; }
+textbox { padding: 6 10; }
+
+listview { lines: 10; columns: 1; }
+
+element {
+  padding:            6 10;
+  spacing:            10px;
+  border-radius:      6;
+}
+
+element normal        { text-color: @fg0; }
+element normal active { text-color: @bg2; }
+element selected      { background-color: @bg2; text-color: @fg1; }
+
+element-icon { size: 1em; }
+element-text { text-color: inherit; }

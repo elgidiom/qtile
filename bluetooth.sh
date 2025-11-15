@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-select=$(bluetoothctl devices | awk '{print $3,$4}' | rofi -dmenu -i -config "~/.config/qtile/config2.rasi")
+select=$(bluetoothctl devices | awk '{print $3,$4}' | rofi -dmenu -i -config /home/gidiom/.config/qtile/rofi/menu.rasi)
 MAC=$(bluetoothctl devices | grep "$select" | awk '{print $2}')
 [ -z  "$MAC" ] && MAC=NoDeviceFound
 
