@@ -146,6 +146,7 @@ widget_top = [
         padding=10,
     ),
     widget.Spacer(),
+    widget.Prompt(),
     widget.Pomodoro(
         color_active=colors["foreground"],
         # fontsize=16,
@@ -466,6 +467,14 @@ floating_layout = layout.Floating(
         Match(title="Meet - "),
     ],
 )
+
+@hook.subscribe.startup_once
+def set_keyboard_layout():
+    subprocess.run(["setxkbmap", "latam"])
+
+@hook.subscribe.resume
+def restore_keyboard():
+    subprocess.run(["setxkbmap", "latam"])
 
 @hook.subscribe.client_new
 def new_client(client):
