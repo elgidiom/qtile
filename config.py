@@ -140,15 +140,30 @@ widget_top = [
         mouse_callbacks = {'Button1': lazy.spawn(f"i3lock -i {base_dir}/wallpapers/lockscreen.jpg -F")}
     ),
     widget.Spacer(length=10),
+    # Icono de volumen (solo visual; sin acciones para evitar conflictos)
     widget.PulseVolume(
         emoji=True,
         fmt='{}',
         emoji_list=['󰝟','','',''],
+        step=5,
+        limit_max_volume=True,
+        mouse_callbacks={
+            # Deshabilitar acciones por defecto con no-ops
+            'Button1': lazy.spawn('true'),       # click izquierdo (mute)
+            'Button4': lazy.spawn('true'),       # scroll arriba
+            'Button5': lazy.spawn('true'),       # scroll abajo
+            # Click derecho útil para abrir control
+            'Button3': lazy.spawn('pavucontrol'),
+        },
     ),
+    # Porcentaje de volumen (control principal: scroll/click)
     widget.PulseVolume(
         emoji=False,
         fmt='{}',
-        check_mute_string='nada',
+        step=5,
+        limit_max_volume=True,
+        # Click derecho abre pavucontrol (opcional)
+        mouse_callbacks={'Button3': lazy.spawn('pavucontrol')},
     ),
     widget.Spacer(
         length=200,
