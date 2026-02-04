@@ -1,14 +1,13 @@
 #!/usr/bin/env sh
 
-KBD_NAME="MX Keys Mini Keyboard"
 LAYOUT="latam"
 OPTIONS="ctrl:swapcaps"
 STATE=""
 
 apply_to_matching_keyboards() {
-    # Aplica el layout/opciones a todos los dispositivos que coincidan y sean teclado.
-    xinput list 2>/dev/null | awk -v name="$KBD_NAME" '
-        $0 ~ name && $0 ~ "slave  keyboard" {
+    # Aplica el layout/opciones a todos los dispositivos teclado.
+    xinput list 2>/dev/null | awk '
+        $0 ~ "slave  keyboard" {
             for (i = 1; i <= NF; i++) {
                 if ($i ~ /^id=/) {
                     gsub("id=", "", $i);

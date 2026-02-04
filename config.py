@@ -520,6 +520,9 @@ floating_layout = layout.Floating(
 def _apply_keyboard_layout():
     subprocess.run(["setxkbmap", "-layout", "latam", "-option", "ctrl:swapcaps"])
 
+def _apply_touchpad_settings():
+    subprocess.Popen([os.path.join(base_dir, "touchpad-setup.sh")])
+
 @hook.subscribe.startup_once
 def set_keyboard_layout():
     _apply_keyboard_layout()
@@ -527,6 +530,14 @@ def set_keyboard_layout():
 @hook.subscribe.resume
 def restore_keyboard():
     _apply_keyboard_layout()
+
+@hook.subscribe.startup_once
+def set_touchpad_settings():
+    _apply_touchpad_settings()
+
+@hook.subscribe.resume
+def restore_touchpad_settings():
+    _apply_touchpad_settings()
 
 @hook.subscribe.client_new
 def new_client(client):

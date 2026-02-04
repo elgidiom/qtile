@@ -22,18 +22,7 @@ setxkbmap -layout latam -option ctrl:swapcaps
 ~/.config/qtile/keyboard-reapply.sh &
 
 # Configuración del touch pad
-
-# Detectar automáticamente el nombre del touchpad (más seguro que usar id)
-DEVICE=$(xinput list | grep -i 'touchpad' | awk -F'\t' '{print $2}' | sed 's/^↳ //')
-
-if [ -n "$DEVICE" ]; then
-    # Activar tap-to-click
-    xinput set-prop "$DEVICE" "libinput Tapping Enabled" 1
-    # Activar scroll natural
-    xinput set-prop "$DEVICE" "libinput Natural Scrolling Enabled" 1
-else
-    echo "No se detectó touchpad."
-fi
+~/.config/qtile/touchpad-setup.sh &
 
 
 # Para bloquear la pantalla
