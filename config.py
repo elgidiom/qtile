@@ -357,7 +357,7 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "x", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-    Key([], "F8", lazy.spawn("flameshot gui")),
+    Key([mod, "shift"], "s", lazy.spawn("flameshot gui")),
     Key([], "Print", lazy.spawn("flameshot gui")),
     Key([mod], "e", lazy.spawn("nautilus -w")),
     # Intercambiando Control con Caps tecla
