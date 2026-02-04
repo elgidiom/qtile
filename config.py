@@ -146,22 +146,22 @@ widget_top = [
         fmt='{}',
         emoji_list=['󰝟','','',''],
         step=5,
-        limit_max_volume=True,
-        mouse_callbacks={
-            # Deshabilitar acciones por defecto con no-ops
-            'Button1': lazy.spawn('true'),       # click izquierdo (mute)
-            'Button4': lazy.spawn('true'),       # scroll arriba
-            'Button5': lazy.spawn('true'),       # scroll abajo
-            # Click derecho útil para abrir control
-            'Button3': lazy.spawn('pavucontrol'),
-        },
+        # limit_max_volume=False,
+        # mouse_callbacks={
+        #     # Deshabilitar acciones por defecto con no-ops
+        #     'Button1': lazy.spawn('true'),       # click izquierdo (mute)
+        #     'Button4': lazy.spawn('true'),       # scroll arriba
+        #     'Button5': lazy.spawn('true'),       # scroll abajo
+        #     # Click derecho útil para abrir control
+        #     'Button3': lazy.spawn('pavucontrol'),
+        # },
     ),
     # Porcentaje de volumen (control principal: scroll/click)
     widget.PulseVolume(
         emoji=False,
         fmt='{}',
         step=5,
-        limit_max_volume=True,
+        limit_max_volume=False,
         # Click derecho abre pavucontrol (opcional)
         mouse_callbacks={'Button3': lazy.spawn('pavucontrol')},
     ),
@@ -517,13 +517,16 @@ floating_layout = layout.Floating(
     ],
 )
 
+def _apply_keyboard_layout():
+    subprocess.run(["setxkbmap", "-layout", "latam", "-option", "ctrl:swapcaps"])
+
 @hook.subscribe.startup_once
 def set_keyboard_layout():
-    subprocess.run(["setxkbmap", "latam"])
+    _apply_keyboard_layout()
 
 @hook.subscribe.resume
 def restore_keyboard():
-    subprocess.run(["setxkbmap", "latam"])
+    _apply_keyboard_layout()
 
 @hook.subscribe.client_new
 def new_client(client):

@@ -19,6 +19,7 @@ nm-applet &
 
 # Configuración del teclado
 setxkbmap -layout latam -option ctrl:swapcaps
+~/.config/qtile/keyboard-reapply.sh &
 
 # Configuración del touch pad
 
