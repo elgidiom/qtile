@@ -241,6 +241,87 @@ widget_top = [
     ),
 ]
 
+# Mismo diseño de barra para monitor secundario (sin Systray para evitar conflicto).
+widget_top_secondary = [
+    widget.Spacer(
+        length=10,
+    ),
+    widget.Spacer(
+        length=5,
+    ),
+    widget.QuickExit(
+    default_text = '',
+    countdown_format='{}',
+    foreground = '525252',
+    countdown_start = 5,
+    ),
+    widget.TextBox(
+        fmt='   ',
+        foreground = '525252',
+        mouse_callbacks = {'Button1': lazy.spawn(f"i3lock -i {base_dir}/wallpapers/lockscreen.jpg -F")}
+    ),
+    widget.Spacer(length=10),
+    widget.PulseVolume(
+        emoji=True,
+        fmt='{}',
+        emoji_list=['󰝟','','',''],
+        step=5,
+    ),
+    widget.PulseVolume(
+        emoji=False,
+        fmt='{}',
+        step=5,
+        limit_max_volume=False,
+        mouse_callbacks={'Button3': lazy.spawn('pavucontrol')},
+    ),
+    widget.Spacer(
+        length=200,
+    ),
+    widget.GroupBox(
+        active=colors["foreground"],
+        highlight_method="block",
+        this_current_screen_border="ffffff20",
+        borderwidth=0,
+        margin_x=0,
+        padding_x=10,
+    ),
+    widget.Spacer(),
+    widget.Clock(
+        format="<b>%a %d de %B  %H:%M:%S</b>",
+        foreground=colors["foreground"],
+        padding=10,
+    ),
+    widget.Spacer(),
+    widget.Prompt(),
+    widget.Pomodoro(
+        color_active=colors["foreground"],
+        color_inactive=colors["foreground"],
+        padding=16,
+        length_pomodori=25,
+    ),
+    widget.Spacer(
+        length=100,
+    ),
+    widget.Memory(
+        measure_mem="G",
+        format="{MemUsed: .2f}{mm}/{MemTotal: .2f}{mm}",
+    ),
+    widget.Spacer(
+        length=5,
+    ),
+    widget.Battery(
+        foreground=colors["foreground"],
+        format="{char} {percent:2.0%}",
+        update_interval=10,
+        show_short_text=False,
+        notify_below=20,
+        charge_char="",
+        discharge_char="",
+        full_char="",
+        low_percentage=0.2,
+    ),
+]
+
 widget_bottom = [
     # space(5),
     # widget.GroupBox(
@@ -353,6 +434,8 @@ keys = [
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([mod], "period", lazy.next_screen(), desc="Focus next monitor"),
+    Key([mod], "comma", lazy.prev_screen(), desc="Focus previous monitor"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
@@ -384,6 +467,7 @@ keys = [
 
     Key([mod], "r", lazy.spawn(
         "rofi -show drun -modi drun -show-icons "
+        "-m -1 "
         "-config /home/gidiom/.config/qtile/rofi/drun.rasi "
         f"-theme-str '{ROFI_THEME_STR}'"
     )),
@@ -395,6 +479,7 @@ keys = [
     Key([mod,"shift"], "0", lazy.spawn(f"i3lock -i {base_dir}/wallpapers/lockscreen.jpg -F")),
     Key([mod], "d", lazy.spawn(
         "rofi -show window -show-icons "
+        "-m -1 "
         "-config /home/gidiom/.config/qtile/rofi/window.rasi "
         f"-theme-str '{ROFI_THEME_STR}'"
     )),
@@ -475,6 +560,15 @@ screens = [
             background=colors["background"],
         ),
     ),
+    Screen(
+        wallpaper=base_dir + "/wallpapers/wallpaper_beach.jpg",
+        wallpaper_mode="stretch",
+        top=bar.Bar(
+            widget_top_secondary,
+            size=25,
+            background=colors["background"],
+        ),
+    ),
 ]
 
 # Drag floating layouts.
@@ -523,6 +617,68 @@ def _apply_keyboard_layout():
 def _apply_touchpad_settings():
     subprocess.Popen([os.path.join(base_dir, "touchpad-setup.sh")])
 
+def _set_external_144hz():
+    """Set 144Hz on connected external outputs when that refresh is available."""
+    try:
+        xr = subprocess.run(
+            ["xrandr", "--query"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except Exception:
+        return
+
+    if xr.returncode != 0 or not xr.stdout:
+        return
+
+    lines = xr.stdout.splitlines()
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if " connected" not in line or line.startswith("Screen "):
+            i += 1
+            continue
+
+        output = line.split()[0]
+        # Keep internal laptop panel untouched.
+        if output.startswith(("eDP", "LVDS", "DSI")):
+            i += 1
+            continue
+
+        mode_144_available = False
+        current_mode = None
+        preferred_mode = None
+
+        j = i + 1
+        while j < len(lines) and lines[j].startswith("   "):
+            mode_line = lines[j].strip()
+            if not mode_line:
+                j += 1
+                continue
+
+            parts = mode_line.split()
+            if parts:
+                mode = parts[0]
+                flags = " ".join(parts[1:])
+                if "*" in flags:
+                    current_mode = mode
+                if "+" in flags and preferred_mode is None:
+                    preferred_mode = mode
+                if "144.00" in flags or "143.98" in flags or "144.01" in flags:
+                    mode_144_available = True
+            j += 1
+
+        if mode_144_available:
+            target_mode = current_mode or preferred_mode
+            cmd = ["xrandr", "--output", output]
+            if target_mode:
+                cmd.extend(["--mode", target_mode])
+            cmd.extend(["--rate", "144"])
+            subprocess.run(cmd, check=False)
+
+        i = j
+
 @hook.subscribe.startup_once
 def set_keyboard_layout():
     _apply_keyboard_layout()
@@ -534,10 +690,15 @@ def restore_keyboard():
 @hook.subscribe.startup_once
 def set_touchpad_settings():
     _apply_touchpad_settings()
+    _set_external_144hz()
 
 @hook.subscribe.resume
 def restore_touchpad_settings():
     _apply_touchpad_settings()
+
+@hook.subscribe.screen_change
+def set_external_refresh_on_screen_change(_event):
+    _set_external_144hz()
 
 @hook.subscribe.client_new
 def new_client(client):
